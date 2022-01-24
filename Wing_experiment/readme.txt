@@ -1,6 +1,6 @@
 ===========================================================================
                 Algorithm: EPOD and pressure estimation
-                   Author: CHEN Junwei, Stefano DISCETTI, Marco Raiola
+                   Author: CHEN Junwei, Stefano DISCETTI, Marco RAIOLA
                Laboratory: EAP of UC3M
                  Platform: MATLAB
                      Date: 3rd November 2021
