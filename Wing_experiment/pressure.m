@@ -161,6 +161,8 @@ end
 clear u v xcor1 ycor1 xcor2 ycor2 p1 p2 minmin maxmax minmax
 clear bregion bline1 bline2 sigma ipx bpeak1 bpeak2
 
+%% show
+
 % plot
 % t = (AFrame - AFrame(1))./Sample_rate;
 % figure; hold on;
@@ -176,6 +178,73 @@ clear bregion bline1 bline2 sigma ipx bpeak1 bpeak2
 % shading interp; colormap(jet); axis equal; colorbar; caxis([-1 1]);
 % title('EPOD');
 
+grid = load('OUT_TRPIV/Grid_Wing.mat');
+
+NACA0018 = [
+1.0000     0.00189
+0.9500     0.01210
+0.9000     0.02172
+0.8000     0.03935
+0.7000     0.05496
+0.6000     0.06845
+0.5000     0.07941
+0.4000     0.08705
+0.3000     0.09003
+0.2500     0.08912
+0.2000     0.08606
+0.1500     0.08018
+0.1000     0.07024
+0.0750     0.06300
+0.0500     0.05332
+0.0250     0.03922
+0.0125     0.02841
+0.0000     0.00000
+0.0125     -0.02841
+0.0250     -0.03922
+0.0500     -0.05332
+0.0750     -0.06300
+0.1000     -0.07024
+0.1500     -0.08018
+0.2000     -0.08606
+0.2500     -0.08912
+0.3000     -0.09003
+0.4000     -0.08705
+0.5000     -0.07941
+0.6000     -0.06845
+0.7000     -0.05496
+0.8000     -0.03935
+0.9000     -0.02172
+0.9500     -0.01210
+1.0000     -0.00189
+];
+x_wing = NACA0018(:,1)' - 1;
+y_wing = NACA0018(:,2)';
+phi = -10/180*pi;
+tmp = [cos(phi),-sin(phi);sin(phi),cos(phi)]*[x_wing; y_wing];
+x_wing = tmp(1,:);
+y_wing = tmp(2,:);
+
+figure; pcolor(grid.X, grid.Y, reshape(Pref(30,:),size(X)))
+shading interp; colormap(jet); axis equal; colorbar; caxis([-1 1]);
+hold on; fill(x_wing, y_wing, 'k'); xlim([-1 2.4]); ylim([-0.5 0.5]);
+title('REF');
+
+figure; pcolor(grid.X, grid.Y, reshape(Prec(30,:),size(X)))
+shading interp; colormap(jet); axis equal; colorbar; caxis([-1 1]);
+hold on; fill(x_wing, y_wing, 'k'); xlim([-1 2.4]); ylim([-0.5 0.5]);
+title('EPOD');
+
+figure; pcolor(grid.X, grid.Y, reshape(Ptay(30,:),size(X)))
+shading interp; colormap(jet); axis equal; colorbar; caxis([-1 1]);
+hold on; fill(x_wing, y_wing, 'k'); xlim([-1 2.4]); ylim([-0.5 0.5]);
+title('TH');
+
+figure; pcolor(grid.X, grid.Y, reshape(Ppro(30,:),size(X)))
+shading interp; colormap(jet); axis equal; colorbar; caxis([-1 1]);
+hold on; fill(x_wing, y_wing, 'k'); xlim([-1 2.4]); ylim([-0.5 0.5]);
+title('PRO');
+
+%% functions
 function V = Photo2world(V, Sample_rate, Mm_per_px_ratio)
 % change velocity from photo to real world coordinate
 V = V.*Sample_rate.*Mm_per_px_ratio.*1e-3;
