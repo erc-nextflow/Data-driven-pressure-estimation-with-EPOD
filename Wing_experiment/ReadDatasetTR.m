@@ -11,16 +11,19 @@ fprintf('experiment performed by J.Chen and M. Raiola\n')
 %---------------------------------------%
 % Input data
 %---------------------------------------%
-Root='.\OUT_TRPIV\Wing_';  % Root of the field files (in .mat format)
+Root='./OUT_TRPIV/Wing_';  % Root of the field files (in .mat format)
+if ispc
+    Root(Root == '/') = '\';
+end
 NImg=3:10300;                                % Number of snapshots (in format [1:X]
 
 step=30;                % downsampling step to build non-TR snapshots
 TR=1:step:10000;         % Training snapshots (last one should be smaller than NImg(end)-tau-1
 TE=1:10000;%1051:1250;           % Testing snapshots (last one should be smaller than NImg(end)-tau-1
 tau=100;                % Length of the probe sequence
-ROI=[41 110 41 150];    % Region of interest in the fields (number of vectors we are considering, indicated as first-last row, first-last column)
-pry=50:5:100;           % position of the probes in the vertical direction according to the original PIV input file
-prx=150;                % position of the probes in the horizontal direction according to the original PIV input file
+ROI=[1 70 1 110];    % Region of interest in the fields (number of vectors we are considering, indicated as first-last row, first-last column)
+pry=10:5:60;           % position of the probes in the vertical direction according to the original PIV input file
+prx=110;                % position of the probes in the horizontal direction according to the original PIV input file
 Flagmean=1;             % if 1 it removes the mean in the data, if 0 it will not remove the mean
 rmax=min([tau*numel(pry) numel(TR)]);   % max rank for reconstruction. Default option is min([tau*numel(pry) numel(TR)]);
 % rmax = 50;
@@ -158,6 +161,5 @@ title('RMSE on V')
 axis equal
 colormap jet(32)
 caxis([0 1])
-
 
 
